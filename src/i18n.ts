@@ -200,6 +200,40 @@ type Strings = {
   canvasContextError?: string;
   blobCreateError?: string;
   urlCopied?: string;
+  
+  // NumInput validation
+  numInputMinValue?: string;
+  numInputMaxValue?: string;
+  
+  // FFmpeg dialog
+  ffmpegNotFound?: string;
+  ffmpegNotFoundDesc?: string;
+  ffmpegInstallAuto?: string;
+  ffmpegInstallManual?: string;
+  ffmpegInstalling?: string;
+  ffmpegInstallSuccess?: string;
+  ffmpegInstallError?: string;
+  ffmpegDownloadFrom?: string;
+  
+  // Theme editor
+  themeNameLabel?: string;
+  themeNameDefault?: string;
+  themeBgApp?: string;
+  themeBgSidebar?: string;
+  themeAccent?: string;
+  themeTextPrimary?: string;
+  themeTextMuted?: string;
+  themeBorder?: string;
+  
+  // Default text
+  defaultTextInput?: string;
+  
+  // File save dialogs
+  fileMarkdown?: string;
+  fileText?: string;
+  fileHtml?: string;
+  fileAnimatedGif?: string;
+  fileMp4Video?: string;
 };
 
 const THEME_NAMES_RU: ThemeNames = {
@@ -363,6 +397,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvas context недоступен',
     blobCreateError: 'Не удалось создать image blob',
     urlCopied: 'URL скопирован!',
+    
+    numInputMinValue: 'Минимальное значение: {0}',
+    numInputMaxValue: 'Максимальное значение: {0}',
+    
+    ffmpegNotFound: 'FFmpeg не найден',
+    ffmpegNotFoundDesc: 'Для работы с видео требуется FFmpeg. Установить автоматически или скачать вручную?',
+    ffmpegInstallAuto: 'Установить автоматически',
+    ffmpegInstallManual: 'Скачать вручную',
+    ffmpegInstalling: 'Установка FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg успешно установлен! Перезапустите приложение.',
+    ffmpegInstallError: 'Ошибка установки FFmpeg: {0}',
+    ffmpegDownloadFrom: 'Скачайте FFmpeg с',
+    
+    themeNameLabel: 'Название',
+    themeNameDefault: 'Моя тема',
+    themeBgApp: 'Фон приложения',
+    themeBgSidebar: 'Фон боковой панели',
+    themeAccent: 'Акцентный цвет',
+    themeTextPrimary: 'Основной текст',
+    themeTextMuted: 'Приглушённый текст',
+    themeBorder: 'Границы',
+    
+    defaultTextInput: 'ASCII ИСКУССТВО',
+    
+    fileMarkdown: 'Файл Markdown',
+    fileText: 'Текстовый файл',
+    fileHtml: 'HTML файл',
+    fileAnimatedGif: 'Анимированный GIF',
+    fileMp4Video: 'MP4 видео',
   },
   en: {
     appTitle: 'ASCII Art Studio',
@@ -502,6 +565,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvas context not available',
     blobCreateError: 'Failed to create image blob',
     urlCopied: 'URL copied!',
+    
+    numInputMinValue: 'Minimum value: {0}',
+    numInputMaxValue: 'Maximum value: {0}',
+    
+    ffmpegNotFound: 'FFmpeg Not Found',
+    ffmpegNotFoundDesc: 'FFmpeg is required for video processing. Install automatically or download manually?',
+    ffmpegInstallAuto: 'Install Automatically',
+    ffmpegInstallManual: 'Download Manually',
+    ffmpegInstalling: 'Installing FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg successfully installed! Please restart the application.',
+    ffmpegInstallError: 'FFmpeg installation error: {0}',
+    ffmpegDownloadFrom: 'Download FFmpeg from',
+    
+    themeNameLabel: 'Name',
+    themeNameDefault: 'My Theme',
+    themeBgApp: 'App Background',
+    themeBgSidebar: 'Sidebar Background',
+    themeAccent: 'Accent Color',
+    themeTextPrimary: 'Primary Text',
+    themeTextMuted: 'Muted Text',
+    themeBorder: 'Borders',
+    
+    defaultTextInput: 'ASCII ART',
+    
+    fileMarkdown: 'Markdown File',
+    fileText: 'Text File',
+    fileHtml: 'HTML File',
+    fileAnimatedGif: 'Animated GIF',
+    fileMp4Video: 'MP4 Video',
   },
   // Остальные языки — копируем EN и меняем нужное
   de: { appTitle:'ASCII Art Studio', openImage:'Bild', openVideo:'Video / GIF',
@@ -595,6 +687,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvas-Kontext nicht verfügbar',
     blobCreateError: 'Bild-Blob konnte nicht erstellt werden',
     urlCopied: 'URL kopiert!',
+    
+    numInputMinValue: 'Mindestwert: {0}',
+    numInputMaxValue: 'Höchstwert: {0}',
+    
+    ffmpegNotFound: 'FFmpeg nicht gefunden',
+    ffmpegNotFoundDesc: 'FFmpeg ist für die Videoverarbeitung erforderlich. Automatisch installieren oder manuell herunterladen?',
+    ffmpegInstallAuto: 'Automatisch installieren',
+    ffmpegInstallManual: 'Manuell herunterladen',
+    ffmpegInstalling: 'FFmpeg wird installiert...',
+    ffmpegInstallSuccess: 'FFmpeg erfolgreich installiert! Bitte starten Sie die Anwendung neu.',
+    ffmpegInstallError: 'FFmpeg-Installationsfehler: {0}',
+    ffmpegDownloadFrom: 'FFmpeg herunterladen von',
+    
+    themeNameLabel: 'Name',
+    themeNameDefault: 'Mein Thema',
+    themeBgApp: 'App-Hintergrund',
+    themeBgSidebar: 'Seitenleisten-Hintergrund',
+    themeAccent: 'Akzentfarbe',
+    themeTextPrimary: 'Primärtext',
+    themeTextMuted: 'Gedämpfter Text',
+    themeBorder: 'Rahmen',
+    
+    defaultTextInput: 'ASCII KUNST',
+    
+    fileMarkdown: 'Markdown-Datei',
+    fileText: 'Textdatei',
+    fileHtml: 'HTML-Datei',
+    fileAnimatedGif: 'Animiertes GIF',
+    fileMp4Video: 'MP4-Video',
   },
   fr: { appTitle:'ASCII Art Studio', openImage:'Image', openVideo:'Vidéo / GIF',
     execute:'Exécuter', save:'Enregistrer', processing:'Traitement...',
@@ -687,6 +808,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Contexte Canvas non disponible',
     blobCreateError: 'Échec de création du blob d\'image',
     urlCopied: 'URL copiée!',
+    
+    numInputMinValue: 'Valeur minimale: {0}',
+    numInputMaxValue: 'Valeur maximale: {0}',
+    
+    ffmpegNotFound: 'FFmpeg introuvable',
+    ffmpegNotFoundDesc: 'FFmpeg est requis pour le traitement vidéo. Installer automatiquement ou télécharger manuellement?',
+    ffmpegInstallAuto: 'Installer automatiquement',
+    ffmpegInstallManual: 'Télécharger manuellement',
+    ffmpegInstalling: 'Installation de FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg installé avec succès! Veuillez redémarrer l\'application.',
+    ffmpegInstallError: 'Erreur d\'installation FFmpeg: {0}',
+    ffmpegDownloadFrom: 'Télécharger FFmpeg depuis',
+    
+    themeNameLabel: 'Nom',
+    themeNameDefault: 'Mon thème',
+    themeBgApp: 'Arrière-plan de l\'application',
+    themeBgSidebar: 'Arrière-plan de la barre latérale',
+    themeAccent: 'Couleur d\'accentuation',
+    themeTextPrimary: 'Texte principal',
+    themeTextMuted: 'Texte atténué',
+    themeBorder: 'Bordures',
+    
+    defaultTextInput: 'ART ASCII',
+    
+    fileMarkdown: 'Fichier Markdown',
+    fileText: 'Fichier texte',
+    fileHtml: 'Fichier HTML',
+    fileAnimatedGif: 'GIF animé',
+    fileMp4Video: 'Vidéo MP4',
   },
   zh: { appTitle:'ASCII艺术工作室', openImage:'图像', openVideo:'视频/GIF',
     execute:'执行', save:'保存', processing:'处理中...',
@@ -775,6 +925,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvas上下文不可用',
     blobCreateError: '无法创建图像blob',
     urlCopied: 'URL已复制!',
+    
+    numInputMinValue: '最小值: {0}',
+    numInputMaxValue: '最大值: {0}',
+    
+    ffmpegNotFound: '未找到FFmpeg',
+    ffmpegNotFoundDesc: '视频处理需要FFmpeg。自动安装还是手动下载？',
+    ffmpegInstallAuto: '自动安装',
+    ffmpegInstallManual: '手动下载',
+    ffmpegInstalling: '正在安装FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg安装成功！请重启应用程序。',
+    ffmpegInstallError: 'FFmpeg安装错误：{0}',
+    ffmpegDownloadFrom: '从以下地址下载FFmpeg',
+    
+    themeNameLabel: '名称',
+    themeNameDefault: '我的主题',
+    themeBgApp: '应用背景',
+    themeBgSidebar: '侧边栏背景',
+    themeAccent: '强调色',
+    themeTextPrimary: '主要文本',
+    themeTextMuted: '柔和文本',
+    themeBorder: '边框',
+    
+    defaultTextInput: 'ASCII 艺术',
+    
+    fileMarkdown: 'Markdown 文件',
+    fileText: '文本文件',
+    fileHtml: 'HTML 文件',
+    fileAnimatedGif: '动态 GIF',
+    fileMp4Video: 'MP4 视频',
   },
   ja: { appTitle:'ASCIIアートスタジオ', openImage:'画像', openVideo:'動画/GIF',
     execute:'実行', save:'保存', processing:'処理中...',
@@ -863,6 +1042,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvasコンテキストが利用できません',
     blobCreateError: '画像blobの作成に失敗しました',
     urlCopied: 'URLをコピーしました!',
+    
+    numInputMinValue: '最小値: {0}',
+    numInputMaxValue: '最大値: {0}',
+    
+    ffmpegNotFound: 'FFmpegが見つかりません',
+    ffmpegNotFoundDesc: 'ビデオ処理にはFFmpegが必要です。自動インストールまたは手動ダウンロードしますか？',
+    ffmpegInstallAuto: '自動インストール',
+    ffmpegInstallManual: '手動ダウンロード',
+    ffmpegInstalling: 'FFmpegをインストール中...',
+    ffmpegInstallSuccess: 'FFmpegが正常にインストールされました！アプリケーションを再起動してください。',
+    ffmpegInstallError: 'FFmpegインストールエラー: {0}',
+    ffmpegDownloadFrom: 'FFmpegをダウンロード',
+    
+    themeNameLabel: '名前',
+    themeNameDefault: 'マイテーマ',
+    themeBgApp: 'アプリの背景',
+    themeBgSidebar: 'サイドバーの背景',
+    themeAccent: 'アクセントカラー',
+    themeTextPrimary: 'プライマリテキスト',
+    themeTextMuted: 'ミュートテキスト',
+    themeBorder: 'ボーダー',
+    
+    defaultTextInput: 'ASCII アート',
+    
+    fileMarkdown: 'Markdownファイル',
+    fileText: 'テキストファイル',
+    fileHtml: 'HTMLファイル',
+    fileAnimatedGif: 'アニメーションGIF',
+    fileMp4Video: 'MP4ビデオ',
   },
   es: { appTitle:'ASCII Art Studio', openImage:'Imagen', openVideo:'Video / GIF',
     execute:'Ejecutar', save:'Guardar', processing:'Procesando...',
@@ -954,6 +1162,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Contexto Canvas no disponible',
     blobCreateError: 'Error al crear blob de imagen',
     urlCopied: '¡URL copiada!',
+    
+    numInputMinValue: 'Valor mínimo: {0}',
+    numInputMaxValue: 'Valor máximo: {0}',
+    
+    ffmpegNotFound: 'FFmpeg no encontrado',
+    ffmpegNotFoundDesc: 'FFmpeg es necesario para el procesamiento de video. ¿Instalar automáticamente o descargar manualmente?',
+    ffmpegInstallAuto: 'Instalar automáticamente',
+    ffmpegInstallManual: 'Descargar manualmente',
+    ffmpegInstalling: 'Instalando FFmpeg...',
+    ffmpegInstallSuccess: '¡FFmpeg instalado con éxito! Por favor reinicie la aplicación.',
+    ffmpegInstallError: 'Error de instalación de FFmpeg: {0}',
+    ffmpegDownloadFrom: 'Descargar FFmpeg desde',
+    
+    themeNameLabel: 'Nombre',
+    themeNameDefault: 'Mi tema',
+    themeBgApp: 'Fondo de la aplicación',
+    themeBgSidebar: 'Fondo de la barra lateral',
+    themeAccent: 'Color de acento',
+    themeTextPrimary: 'Texto principal',
+    themeTextMuted: 'Texto atenuado',
+    themeBorder: 'Bordes',
+    
+    defaultTextInput: 'ARTE ASCII',
+    
+    fileMarkdown: 'Archivo Markdown',
+    fileText: 'Archivo de texto',
+    fileHtml: 'Archivo HTML',
+    fileAnimatedGif: 'GIF animado',
+    fileMp4Video: 'Video MP4',
   },
   pt: { appTitle:'ASCII Art Studio', openImage:'Imagem', openVideo:'Vídeo / GIF',
     execute:'Executar', save:'Salvar', processing:'Processando...',
@@ -1045,6 +1282,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Contexto Canvas não disponível',
     blobCreateError: 'Falha ao criar blob de imagem',
     urlCopied: 'URL copiada!',
+    
+    numInputMinValue: 'Valor mínimo: {0}',
+    numInputMaxValue: 'Valor máximo: {0}',
+    
+    ffmpegNotFound: 'FFmpeg não encontrado',
+    ffmpegNotFoundDesc: 'FFmpeg é necessário para processamento de vídeo. Instalar automaticamente ou baixar manualmente?',
+    ffmpegInstallAuto: 'Instalar automaticamente',
+    ffmpegInstallManual: 'Baixar manualmente',
+    ffmpegInstalling: 'Instalando FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg instalado com sucesso! Por favor reinicie a aplicação.',
+    ffmpegInstallError: 'Erro de instalação do FFmpeg: {0}',
+    ffmpegDownloadFrom: 'Baixar FFmpeg de',
+    
+    themeNameLabel: 'Nome',
+    themeNameDefault: 'Meu tema',
+    themeBgApp: 'Fundo do aplicativo',
+    themeBgSidebar: 'Fundo da barra lateral',
+    themeAccent: 'Cor de destaque',
+    themeTextPrimary: 'Texto principal',
+    themeTextMuted: 'Texto atenuado',
+    themeBorder: 'Bordas',
+    
+    defaultTextInput: 'ARTE ASCII',
+    
+    fileMarkdown: 'Arquivo Markdown',
+    fileText: 'Arquivo de texto',
+    fileHtml: 'Arquivo HTML',
+    fileAnimatedGif: 'GIF animado',
+    fileMp4Video: 'Vídeo MP4',
   },
   ko: { appTitle:'ASCII 아트 스튜디오', openImage:'이미지', openVideo:'비디오/GIF',
     execute:'실행', save:'저장', processing:'처리 중...',
@@ -1136,6 +1402,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Canvas 컨텍스트를 사용할 수 없습니다',
     blobCreateError: '이미지 blob 생성 실패',
     urlCopied: 'URL이 복사되었습니다!',
+    
+    numInputMinValue: '최소값: {0}',
+    numInputMaxValue: '최대값: {0}',
+    
+    ffmpegNotFound: 'FFmpeg를 찾을 수 없습니다',
+    ffmpegNotFoundDesc: '비디오 처리에는 FFmpeg가 필요합니다. 자동으로 설치하시겠습니까, 아니면 수동으로 다운로드하시겠습니까?',
+    ffmpegInstallAuto: '자동 설치',
+    ffmpegInstallManual: '수동 다운로드',
+    ffmpegInstalling: 'FFmpeg 설치 중...',
+    ffmpegInstallSuccess: 'FFmpeg가 성공적으로 설치되었습니다! 애플리케이션을 재시작하세요.',
+    ffmpegInstallError: 'FFmpeg 설치 오류: {0}',
+    ffmpegDownloadFrom: 'FFmpeg 다운로드',
+    
+    themeNameLabel: '이름',
+    themeNameDefault: '내 테마',
+    themeBgApp: '앱 배경',
+    themeBgSidebar: '사이드바 배경',
+    themeAccent: '강조 색상',
+    themeTextPrimary: '기본 텍스트',
+    themeTextMuted: '흐린 텍스트',
+    themeBorder: '테두리',
+    
+    defaultTextInput: 'ASCII 아트',
+    
+    fileMarkdown: 'Markdown 파일',
+    fileText: '텍스트 파일',
+    fileHtml: 'HTML 파일',
+    fileAnimatedGif: '애니메이션 GIF',
+    fileMp4Video: 'MP4 비디오',
   },
   it: { appTitle:'ASCII Art Studio', openImage:'Immagine', openVideo:'Video / GIF',
     execute:'Esegui', save:'Salva', processing:'Elaborazione...',
@@ -1227,6 +1522,35 @@ const T: Record<Lang, Strings> = {
     canvasContextError: 'Contesto Canvas non disponibile',
     blobCreateError: 'Impossibile creare blob immagine',
     urlCopied: 'URL copiato!',
+    
+    numInputMinValue: 'Valore minimo: {0}',
+    numInputMaxValue: 'Valore massimo: {0}',
+    
+    ffmpegNotFound: 'FFmpeg non trovato',
+    ffmpegNotFoundDesc: 'FFmpeg è necessario per l\'elaborazione video. Installare automaticamente o scaricare manualmente?',
+    ffmpegInstallAuto: 'Installa automaticamente',
+    ffmpegInstallManual: 'Scarica manualmente',
+    ffmpegInstalling: 'Installazione di FFmpeg...',
+    ffmpegInstallSuccess: 'FFmpeg installato con successo! Si prega di riavviare l\'applicazione.',
+    ffmpegInstallError: 'Errore di installazione FFmpeg: {0}',
+    ffmpegDownloadFrom: 'Scarica FFmpeg da',
+    
+    themeNameLabel: 'Nome',
+    themeNameDefault: 'Il mio tema',
+    themeBgApp: 'Sfondo dell\'applicazione',
+    themeBgSidebar: 'Sfondo della barra laterale',
+    themeAccent: 'Colore di accento',
+    themeTextPrimary: 'Testo principale',
+    themeTextMuted: 'Testo attenuato',
+    themeBorder: 'Bordi',
+    
+    defaultTextInput: 'ARTE ASCII',
+    
+    fileMarkdown: 'File Markdown',
+    fileText: 'File di testo',
+    fileHtml: 'File HTML',
+    fileAnimatedGif: 'GIF animata',
+    fileMp4Video: 'Video MP4',
   },
 };
 

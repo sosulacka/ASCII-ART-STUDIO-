@@ -1,4 +1,4 @@
-import { useState, useRef, MouseEvent as ReactMouseEvent } from 'react';
+import { useState, useRef, useEffect, MouseEvent as ReactMouseEvent } from 'react';
 import { X, Upload } from 'lucide-react';
 import { THEMES } from './themes';
 import { LANGUAGES, t, type Lang } from './i18n';
@@ -164,24 +164,175 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 }
 
 // ── Кастомный number input ────────────────────────────────────
-function NumInput({ value, min, max, onChange }: {
+function NumInput({ value, min, max, onChange, onError }: {
   value: number; min: number; max: number;
   onChange: (v: number) => void;
+  onError?: (limitValue: number, isMin: boolean) => void;
 }) {
+  const [localValue, setLocalValue] = useState(String(value));
+  const [isEditing, setIsEditing] = useState(false);
+  const validationTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isEditing) {
+      setLocalValue(String(value));
+    }
+  }, [value, isEditing]);
+
+  const validateAndApply = (newValue: string) => {
+    if (newValue === '') {
+      // Пустое поле - ничего не делаем, ждём дальнейшего ввода
+      return;
+    }
+    
+    const num = Number(newValue);
+    if (!isNaN(num)) {
+      if (num < min) {
+        onChange(min);
+        setLocalValue(String(min));
+        if (onError) onError(min, true);
+      } else if (num > max) {
+        onChange(max);
+        setLocalValue(String(max));
+        if (onError) onError(max, false);
+      } else {
+        onChange(num);
+      }
+    }
+  };
+
+  const handleChange = (newValue: string) => {
+    setLocalValue(newValue);
+    setIsEditing(true);
+    
+    // Очищаем предыдущий таймаут
+    if (validationTimeoutRef.current) {
+      clearTimeout(validationTimeoutRef.current);
+    }
+    
+    // Устанавливаем новый таймаут на 3 секунды
+    validationTimeoutRef.current = window.setTimeout(() => {
+      validateAndApply(newValue);
+      setIsEditing(false);
+    }, 3000);
+  };
+
+  const handleBlur = () => {
+    // Очищаем таймаут при blur
+    if (validationTimeoutRef.current) {
+      clearTimeout(validationTimeoutRef.current);
+    }
+    
+    setIsEditing(false);
+    
+    if (localValue === '') {
+      // Если поле пустое, возвращаем минимальное значение
+      setLocalValue(String(min));
+      onChange(min);
+    } else if (isNaN(Number(localValue))) {
+      // Если невалидное значение, возвращаем текущее
+      setLocalValue(String(value));
+    } else {
+      // Валидируем и применяем
+      validateAndApply(localValue);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (validationTimeoutRef.current) {
+        clearTimeout(validationTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
       <button
-        className="num-step-btn"
-        onClick={() => onChange(Math.max(min, value - 1))}
+        onClick={() => {
+          const newVal = Math.max(min, value - 1);
+          onChange(newVal);
+        }}
+        disabled={value <= min}
+        style={{
+          background: value <= min ? 'var(--bg-section)' : 'var(--bg-hover)',
+          border: '1px solid var(--border-strong)',
+          color: value <= min ? 'var(--text-disabled)' : 'var(--text-primary)',
+          width: 28,
+          height: 28,
+          borderRadius: 4,
+          cursor: value <= min ? 'not-allowed' : 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 16,
+          fontWeight: 600,
+          transition: 'all 0.15s',
+        }}
+        onMouseEnter={(e) => {
+          if (value > min) {
+            e.currentTarget.style.background = 'var(--bg-section)';
+            e.currentTarget.style.borderColor = 'var(--accent)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (value > min) {
+            e.currentTarget.style.background = 'var(--bg-hover)';
+            e.currentTarget.style.borderColor = 'var(--border-strong)';
+          }
+        }}
       >−</button>
       <input
-        type="number" value={value} min={min} max={max}
-        className="num-input"
-        onChange={e => onChange(Math.max(min, Math.min(max, Number(e.target.value))))}
+        type="text"
+        value={localValue}
+        onFocus={() => setIsEditing(true)}
+        onBlur={handleBlur}
+        style={{
+          width: 80,
+          textAlign: 'center',
+          background: 'var(--bg-input)',
+          border: '1px solid var(--border-strong)',
+          color: 'var(--text-primary)',
+          borderRadius: 4,
+          padding: '6px 8px',
+          fontSize: 13,
+          fontFamily: 'var(--font-mono)',
+        }}
+        onChange={e => handleChange(e.target.value)}
       />
       <button
-        className="num-step-btn"
-        onClick={() => onChange(Math.min(max, value + 1))}
+        onClick={() => {
+          const newVal = Math.min(max, value + 1);
+          onChange(newVal);
+        }}
+        disabled={value >= max}
+        style={{
+          background: value >= max ? 'var(--bg-section)' : 'var(--bg-hover)',
+          border: '1px solid var(--border-strong)',
+          color: value >= max ? 'var(--text-disabled)' : 'var(--text-primary)',
+          width: 28,
+          height: 28,
+          borderRadius: 4,
+          cursor: value >= max ? 'not-allowed' : 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 16,
+          fontWeight: 600,
+          transition: 'all 0.15s',
+        }}
+        onMouseEnter={(e) => {
+          if (value < max) {
+            e.currentTarget.style.background = 'var(--bg-section)';
+            e.currentTarget.style.borderColor = 'var(--accent)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (value < max) {
+            e.currentTarget.style.background = 'var(--bg-hover)';
+            e.currentTarget.style.borderColor = 'var(--border-strong)';
+          }
+        }}
       >+</button>
     </div>
   );
@@ -233,14 +384,15 @@ function BoolRow({ label, val, onChange }: {
   );
 }
 
-function NumRow({ label, val, min, max, onChange }: {
+function NumRow({ label, val, min, max, onChange, onError }: {
   label: string; val: number; min: number; max: number;
   onChange: (v: number) => void;
+  onError?: (limitValue: number, isMin: boolean) => void;
 }) {
   return (
     <div className="setting-row">
       <span className="setting-label">{label}</span>
-      <NumInput value={val} min={min} max={max} onChange={onChange} />
+      <NumInput value={val} min={min} max={max} onChange={onChange} onError={onError} />
     </div>
   );
 }
@@ -274,7 +426,7 @@ const FONT_OPTIONS = [
 // ── Редактор кастомной темы ───────────────────────────────────
 function ThemeEditor({ lang, onClose }: { lang: Lang; onClose: () => void }) {
   const s = t(lang);
-  const [name, setName] = useState('My Theme');
+  const [name, setName] = useState(s.themeNameDefault || 'My Theme');
   const [colors, setColors] = useState({
     bgApp: '#0a0a0b',
     bgSidebar: '#0c0c0e',
@@ -290,18 +442,46 @@ function ThemeEditor({ lang, onClose }: { lang: Lang; onClose: () => void }) {
         <p className="modal-title">{s.themeEditor}</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 400, overflowY: 'auto' }} className="custom-scrollbar">
           <div className="setting-row">
-            <span className="setting-label">Название</span>
+            <span className="setting-label">{s.themeNameLabel}</span>
             <input type="text" value={name} onChange={e => setName(e.target.value)}
               className="text-input" style={{ width: 140 }} />
           </div>
-          {Object.entries(colors).map(([key, val]) => (
-            <div key={key} className="setting-row">
-              <span className="setting-label">{key}</span>
-              <input type="color" value={val.startsWith('#') ? val : '#000000'}
-                onChange={e => setColors(prev => ({ ...prev, [key]: e.target.value }))}
-                className="color-input" />
-            </div>
-          ))}
+          <div className="setting-row">
+            <span className="setting-label">{s.themeBgApp}</span>
+            <input type="color" value={colors.bgApp}
+              onChange={e => setColors(prev => ({ ...prev, bgApp: e.target.value }))}
+              className="color-input" />
+          </div>
+          <div className="setting-row">
+            <span className="setting-label">{s.themeBgSidebar}</span>
+            <input type="color" value={colors.bgSidebar}
+              onChange={e => setColors(prev => ({ ...prev, bgSidebar: e.target.value }))}
+              className="color-input" />
+          </div>
+          <div className="setting-row">
+            <span className="setting-label">{s.themeAccent}</span>
+            <input type="color" value={colors.accent}
+              onChange={e => setColors(prev => ({ ...prev, accent: e.target.value }))}
+              className="color-input" />
+          </div>
+          <div className="setting-row">
+            <span className="setting-label">{s.themeTextPrimary}</span>
+            <input type="color" value={colors.textPrimary}
+              onChange={e => setColors(prev => ({ ...prev, textPrimary: e.target.value }))}
+              className="color-input" />
+          </div>
+          <div className="setting-row">
+            <span className="setting-label">{s.themeTextMuted}</span>
+            <input type="color" value={colors.textMuted}
+              onChange={e => setColors(prev => ({ ...prev, textMuted: e.target.value }))}
+              className="color-input" />
+          </div>
+          <div className="setting-row">
+            <span className="setting-label">{s.themeBorder}</span>
+            <input type="color" value={colors.border.startsWith('#') ? colors.border : '#000000'}
+              onChange={e => setColors(prev => ({ ...prev, border: e.target.value }))}
+              className="color-input" />
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           <button className="modal-cancel" onClick={onClose}>{s.cancel}</button>
@@ -321,13 +501,14 @@ function ThemeEditor({ lang, onClose }: { lang: Lang; onClose: () => void }) {
 }
 
 // ── Главный компонент ─────────────────────────────────────────
-export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPaletteChange }: {
+export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPaletteChange, showToast }: {
   config: AppConfig;
   lang: Lang;
   onSave: (c: AppConfig) => void;
   onReset: () => void;
   onClose: () => void;
   onPaletteChange?: (val: number) => void;
+  showToast?: (message: string, type: 'info' | 'success' | 'error' | 'warning') => void;
 }) {
   const s = t(lang);
   const [local, setLocal] = useState<AppConfig>({ ...config });
@@ -336,6 +517,14 @@ export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPalett
 
   const upd = <K extends keyof AppConfig>(k: K, v: AppConfig[K]) =>
     setLocal(prev => ({ ...prev, [k]: v }));
+  
+  const handleNumError = (limitValue: number, isMin: boolean) => {
+    if (showToast) {
+      const template = isMin ? s.numInputMinValue : s.numInputMaxValue;
+      const message = template ? template.replace('{0}', String(limitValue)) : `${isMin ? 'Minimum' : 'Maximum'}: ${limitValue}`;
+      showToast(message, 'warning');
+    }
+  };
 
   // Загрузка кастомного шрифта
   const handleFontUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -494,9 +683,9 @@ export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPalett
             
             <BoolRow label={s.s_autoPlay}      val={local.autoPlay}      onChange={v => upd('autoPlay', v)} />
 
-            <NumRow label={s.s_defaultWidth} val={local.defaultWidth} min={20}  max={600}  onChange={v => upd('defaultWidth', v)} />
-            <NumRow label={s.s_defaultZoom}  val={local.defaultZoom}  min={2}   max={64}   onChange={v => upd('defaultZoom', v)} />
-            <NumRow label={s.virtualCameraPort} val={local.virtualCameraPort} min={1024} max={65535} onChange={v => upd('virtualCameraPort', v)} />
+            <NumRow label={s.s_defaultWidth} val={local.defaultWidth} min={20}  max={600}  onChange={v => upd('defaultWidth', v)} onError={handleNumError} />
+            <NumRow label={s.s_defaultZoom}  val={local.defaultZoom}  min={2}   max={64}   onChange={v => upd('defaultZoom', v)} onError={handleNumError} />
+            <NumRow label={s.virtualCameraPort} val={local.virtualCameraPort} min={1024} max={65535} onChange={v => upd('virtualCameraPort', v)} onError={handleNumError} />
 
             <ColorRow label={s.s_defaultBg} val={local.defaultBg}
               onChange={v => upd('defaultBg', v)} />
@@ -543,10 +732,16 @@ export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPalett
 
           {/* Футер */}
           <div className="settings-footer">
-            <TiltBtn className="btn-danger" onClick={() => { onReset(); onClose(); }}>
+            <TiltBtn 
+              className="settings-footer-btn settings-footer-btn--reset" 
+              onClick={() => { onReset(); onClose(); }}
+            >
               {s.resetDefaults}
             </TiltBtn>
-            <TiltBtn className="btn-success" onClick={() => { onSave(local); onClose(); }}>
+            <TiltBtn 
+              className="settings-footer-btn settings-footer-btn--save" 
+              onClick={() => { onSave(local); onClose(); }}
+            >
               {s.saveSettings}
             </TiltBtn>
           </div>

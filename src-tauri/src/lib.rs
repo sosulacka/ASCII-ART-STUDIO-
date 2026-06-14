@@ -1768,6 +1768,122 @@ async fn is_native_camera_available() -> Result<bool, String> {
     }
 }
 
+#[tauri::command]
+async fn check_ffmpeg() -> Result<bool, String> {
+    use std::process::Command;
+    
+    let result = Command::new("ffmpeg")
+        .arg("-version")
+        .output();
+    
+    match result {
+        Ok(output) => Ok(output.status.success()),
+        Err(_) => Ok(false),
+    }
+}
+
+#[tauri::command]
+async fn install_ffmpeg() -> Result<String, String> {
+    use std::process::Command;
+    
+    #[cfg(target_os = "windows")]
+    {
+        // Проверяем наличие winget
+        let winget_check = Command::new("winget")
+            .arg("--version")
+            .output();
+        
+        if winget_check.is_ok() {
+            // Устанавливаем через winget
+            let output = Command::new("winget")
+                .args(&["install", "-e", "--id", "Gyan.FFmpeg", "--silent"])
+                .output()
+                .map_err(|e| format!("Failed to execute winget: {}", e))?;
+            
+            if output.status.success() {
+                return Ok("FFmpeg successfully installed via winget. Please restart the application.".to_string());
+            }
+        }
+        
+        // Если winget не работает, проверяем Chocolatey
+        let choco_check = Command::new("choco")
+            .arg("--version")
+            .output();
+        
+        if choco_check.is_ok() {
+            let output = Command::new("choco")
+                .args(&["install", "ffmpeg", "-y"])
+                .output()
+                .map_err(|e| format!("Failed to execute choco: {}", e))?;
+            
+            if output.status.success() {
+                return Ok("FFmpeg successfully installed via Chocolatey. Please restart the application.".to_string());
+            }
+        }
+        
+        // Если ничего не сработало
+        Err("No package manager found. Please install FFmpeg manually from https://ffmpeg.org/download.html".to_string())
+    }
+    
+    #[cfg(target_os = "linux")]
+    {
+        // Проверяем apt (Debian/Ubuntu)
+        let apt_check = Command::new("apt")
+            .arg("--version")
+            .output();
+        
+        if apt_check.is_ok() {
+            let output = Command::new("pkexec")
+                .args(&["apt", "install", "-y", "ffmpeg"])
+                .output()
+                .map_err(|e| format!("Failed to execute apt: {}", e))?;
+            
+            if output.status.success() {
+                return Ok("FFmpeg successfully installed via apt.".to_string());
+            }
+        }
+        
+        // Проверяем dnf (Fedora/RHEL)
+        let dnf_check = Command::new("dnf")
+            .arg("--version")
+            .output();
+        
+        if dnf_check.is_ok() {
+            let output = Command::new("pkexec")
+                .args(&["dnf", "install", "-y", "ffmpeg"])
+                .output()
+                .map_err(|e| format!("Failed to execute dnf: {}", e))?;
+            
+            if output.status.success() {
+                return Ok("FFmpeg successfully installed via dnf.".to_string());
+            }
+        }
+        
+        // Проверяем pacman (Arch)
+        let pacman_check = Command::new("pacman")
+            .arg("--version")
+            .output();
+        
+        if pacman_check.is_ok() {
+            let output = Command::new("pkexec")
+                .args(&["pacman", "-S", "--noconfirm", "ffmpeg"])
+                .output()
+                .map_err(|e| format!("Failed to execute pacman: {}", e))?;
+            
+            if output.status.success() {
+                return Ok("FFmpeg successfully installed via pacman.".to_string());
+            }
+        }
+        
+        Err("No supported package manager found (apt/dnf/pacman). Please install FFmpeg manually.".to_string())
+    }
+    
+    #[cfg(not(any(target_os = "windows", target_os = "linux")))]
+    {
+        Err("Automatic FFmpeg installation not supported on this platform.".to_string())
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -1795,6 +1911,8 @@ pub fn run() {
             stop_native_camera,
             is_native_camera_available,
             set_native_camera_resolution,
+            check_ffmpeg,
+            install_ffmpeg,
         ])
         .setup(|app| {
             app.manage(TempFolderState {

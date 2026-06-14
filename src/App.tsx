@@ -9,7 +9,7 @@ import {
   Image as ImageIcon, Video, Save, Play, Sliders,
   Palette, Type, Monitor, SkipBack, SkipForward,
   Pause, Square, Film, ChevronDown, Settings,
-  Minus, Maximize2, Minimize2, X
+  Minus, Maximize2, Minimize2, X, Zap, Globe
 } from 'lucide-react';
 import figlet from 'figlet';
 import './App.css';
@@ -297,16 +297,65 @@ function SaveModal({ type, lang, onClose, onChoose }: {
               </button>
               <button className="modal-btn" onClick={() => onChoose('png')}>
                 <span className="modal-btn-ext">.png</span>
-                <span>PNG Image</span>
+                <span>{s.pngImage}</span>
               </button>
               <button className="modal-btn" onClick={() => onChoose('gif')}>
                 <span className="modal-btn-ext">.gif</span>
-                <span>GIF Image</span>
+                <span>{s.gifImage}</span>
               </button>
             </>
           )}
         </div>
         <button className="modal-cancel" onClick={onClose}>{s.cancel}</button>
+      </div>
+    </div>
+  );
+}
+
+function FFmpegDialog({ lang, onClose, onInstall, onManual, installing }: {
+  lang: Lang;
+  onClose: () => void;
+  onInstall: () => void;
+  onManual: () => void;
+  installing: boolean;
+}) {
+  const s = t(lang);
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && !installing && onClose()}>
+      <div className="modal">
+        <p className="modal-title">{s.ffmpegNotFound}</p>
+        <p className="modal-subtitle">{s.ffmpegNotFoundDesc}</p>
+        
+        {installing ? (
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <svg className="lang-spinner" viewBox="0 0 50 50" style={{ 
+              stroke: 'var(--accent)', 
+              width: 40, 
+              height: 40,
+              margin: '0 auto 10px'
+            }}>
+              <circle cx="25" cy="25" r="20" fill="none" strokeWidth="3"
+                strokeDasharray="80 120" strokeLinecap="round" />
+            </svg>
+            <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>
+              {s.ffmpegInstalling}
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="modal-buttons">
+              <button className="modal-btn" onClick={onInstall}>
+                <span className="modal-btn-ext">AUTO</span>
+                <span>{s.ffmpegInstallAuto}</span>
+              </button>
+              <button className="modal-btn" onClick={onManual}>
+                <span className="modal-btn-ext">WEB</span>
+                <span>{s.ffmpegInstallManual}</span>
+              </button>
+            </div>
+            <button className="modal-cancel" onClick={onClose}>{s.cancel}</button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -402,6 +451,45 @@ export default function App() {
   useEffect(() => {
     if (loaded) applyTheme(currentTheme, config.fontFamily);
   }, [currentTheme, config.fontFamily, loaded]);
+  
+  // Проверка FFmpeg при каждом запуске
+  useEffect(() => {
+    if (loaded && !splashDone) return;
+    
+    const checkFFmpeg = async () => {
+      try {
+        const hasFFmpeg = await invoke<boolean>('check_ffmpeg');
+        if (!hasFFmpeg) {
+          setShowFFmpegDialog(true);
+        }
+      } catch (err) {
+        console.error('FFmpeg check error:', err);
+      }
+    };
+    
+    checkFFmpeg();
+  }, [loaded, splashDone]);
+
+  const handleFFmpegInstall = async () => {
+    setFfmpegInstalling(true);
+    try {
+      const result = await invoke<string>('install_ffmpeg');
+      showToast(result, 'success');
+      setShowFFmpegDialog(false);
+    } catch (err: any) {
+      const errorMsg = s.ffmpegInstallError ? s.ffmpegInstallError.replace('{0}', String(err)) : String(err);
+      showToast(errorMsg, 'error');
+    } finally {
+      setFfmpegInstalling(false);
+    }
+  };
+  
+  const handleFFmpegManual = () => {
+    setShowFFmpegDialog(false);
+    showToast(`${s.ffmpegDownloadFrom}: https://ffmpeg.org/download.html`, 'info', 8000);
+    // Открываем ссылку в браузере
+    window.open('https://ffmpeg.org/download.html', '_blank');
+  };
 
   const [langTransition, setLangTransition] = useState(false);
   const prevLang = useRef<Lang>(currentLang);
@@ -414,6 +502,8 @@ export default function App() {
   }, [currentLang]);
 
   const [showSettings, setShowSettings] = useState(false);
+  const [showFFmpegDialog, setShowFFmpegDialog] = useState(false);
+  const [ffmpegInstalling, setFfmpegInstalling] = useState(false);
 
   const [filePath, setFilePath]   = useState<string | null>(null);
   const [isVideo, setIsVideo]     = useState(false);
@@ -450,7 +540,7 @@ export default function App() {
   const [statusMsg, setStatusMsg]       = useState('');
 
   const [sidebarMode, setSidebarMode] = useState<'ascii' | 'text' | 'webcam'>('ascii');
-  const [textInput, setTextInput]     = useState('ASCII ART');
+  const [textInput, setTextInput]     = useState(s.defaultTextInput || 'ASCII ART');
   const [textOutput, setTextOutput]   = useState('');
   const [selectedFigletFont, setSelectedFigletFont] = useState('Standard');
   const [hoveredFont, setHoveredFont] = useState<string | null>(null);
@@ -1382,8 +1472,8 @@ export default function App() {
       const isMd = fmt === 'md';
       const savePath = await save({
         filters: [isMd
-          ? { name: 'Markdown File', extensions: ['md'] }
-          : { name: 'Text File', extensions: ['txt'] }],
+          ? { name: s.fileMarkdown || 'Markdown File', extensions: ['md'] }
+          : { name: s.fileText || 'Text File', extensions: ['txt'] }],
         defaultPath: isMd ? 'ascii_text.md' : 'ascii_text.txt',
       });
       if (!savePath || typeof savePath !== 'string') return;
@@ -1432,8 +1522,8 @@ export default function App() {
       const isHtml = fmt === 'html';
       const savePath = await save({
         filters: [isHtml
-          ? { name: 'HTML File', extensions: ['html'] }
-          : { name: 'Text File', extensions: ['txt'] }],
+          ? { name: s.fileHtml || 'HTML File', extensions: ['html'] }
+          : { name: s.fileText || 'Text File', extensions: ['txt'] }],
         defaultPath: isHtml ? 'ascii_art.html' : 'ascii_art.txt',
       });
       if (!savePath || typeof savePath !== 'string') return;
@@ -1460,8 +1550,8 @@ export default function App() {
   const doSaveVideo = async (fmt: string) => {
     const savePath = await save({
       filters: [fmt === 'gif'
-        ? { name: 'Animated GIF', extensions: ['gif'] }
-        : { name: 'MP4 Video',    extensions: ['mp4'] }],
+        ? { name: s.fileAnimatedGif || 'Animated GIF', extensions: ['gif'] }
+        : { name: s.fileMp4Video || 'MP4 Video',    extensions: ['mp4'] }],
       defaultPath: fmt === 'gif' ? 'ascii_video.gif' : 'ascii_video.mp4',
     });
     if (!savePath || typeof savePath !== 'string') return;
@@ -1545,8 +1635,9 @@ export default function App() {
             onSave={saveConfig}
             onReset={resetConfig}
             onClose={() => setShowSettings(false)}
-        onPaletteChange={(val) => setPaletteIndex(val)}
-      />
+            onPaletteChange={(val) => setPaletteIndex(val)}
+            showToast={showToast}
+          />
         )}
 
         {showSaveModal && (
@@ -1555,6 +1646,16 @@ export default function App() {
             lang={currentLang}
             onClose={() => setShowSaveModal(false)}
             onChoose={handleFormatChosen}
+          />
+        )}
+
+        {showFFmpegDialog && (
+          <FFmpegDialog
+            lang={currentLang}
+            onClose={() => setShowFFmpegDialog(false)}
+            onInstall={handleFFmpegInstall}
+            onManual={handleFFmpegManual}
+            installing={ffmpegInstalling}
           />
         )}
 
