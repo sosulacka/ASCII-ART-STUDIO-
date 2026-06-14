@@ -39,7 +39,8 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             libv4l-dev \
-            v4l-utils
+            v4l-utils \
+            pkg-config
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -55,7 +56,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: 'src-tauri'
 
       - name: Install frontend dependencies
         run: npm ci
@@ -65,8 +66,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: 'ASCII Art Studio ${{ github.ref_name }}'
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || format('manual-{0}', github.sha) }}
+          releaseName: "ASCII Art Studio ${{ github.ref_type == 'tag' && github.ref_name || '' }}"
           releaseBody: 'Автоматическая сборка релиза для Windows и Linux'
           releaseDraft: true
           prerelease: false
