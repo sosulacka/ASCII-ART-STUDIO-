@@ -232,7 +232,6 @@ impl NativeCameraState {
 mod virtual_camera_linux {
     use image::RgbImage;
     use std::sync::{Arc, Mutex};
-    use tokio::runtime::Runtime;
     use axum::{
         Router,
         response::Response,
@@ -349,6 +348,10 @@ mod virtual_camera_linux {
             
             Ok(())
         }
+        
+        pub fn set_fps(&mut self, fps: u32) {
+            self.target_fps.store(fps.max(1).min(120), Ordering::Relaxed);
+        }
     }
     
     impl Drop for VirtualCamera {
@@ -370,11 +373,12 @@ mod virtual_camera_linux {
         port: u16,
         frame_buffer: Arc<Mutex<Option<Vec<u8>>>>,
         running: Arc<AtomicBool>,
+        target_fps: Arc<std::sync::atomic::AtomicU32>,
     ) {
         let app = Router::new()
             .route("/stream", axum::routing::get(mjpeg_stream))
             .route("/", axum::routing::get(index_page))
-            .with_state((frame_buffer, running));
+            .with_state((frame_buffer, running, target_fps));
         
         match tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await {
             Ok(listener) => {
