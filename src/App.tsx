@@ -1993,13 +1993,11 @@ export default function App() {
                   </button>
                 </div>
 
-                {config.showFps && (
-                  <div className="frame-info">
-                    {currentFrame + 1} / {videoFrames.length}
-                    &nbsp;·&nbsp;
-                    {videoFps.toFixed(1)} FPS
-                  </div>
-                )}
+                <div className="frame-info">
+                  {currentFrame + 1} / {videoFrames.length}
+                  &nbsp;·&nbsp;
+                  {videoFps.toFixed(1)} FPS
+                </div>
 
                 <input
                   type="range"
@@ -2098,20 +2096,9 @@ export default function App() {
           className="viewport"
           style={{
             backgroundColor: bgColor,
-            cursor: config.cursorCross ? 'crosshair' : 'default',
           }}
           onWheel={handleWheel}
         >
-          {config.showGrid && (
-            <div style={{
-              position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-              backgroundImage:
-                'linear-gradient(var(--border) 1px, transparent 1px),' +
-                'linear-gradient(90deg, var(--border) 1px, transparent 1px)',
-              backgroundSize: '20px 20px',
-            }} />
-          )}
-
           <div ref={outputRef} className="viewport-inner custom-scrollbar">
             {sidebarMode === 'text' ? (
               isHtmlContent && textOutput ? (

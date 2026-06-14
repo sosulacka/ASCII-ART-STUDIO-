@@ -493,20 +493,9 @@ export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPalett
             )}
             
             <BoolRow label={s.s_autoPlay}      val={local.autoPlay}      onChange={v => upd('autoPlay', v)} />
-            <BoolRow label={s.s_showFps}       val={local.showFps}       onChange={v => upd('showFps', v)} />
-            <BoolRow label={s.s_smoothScale}   val={local.smoothScale}   onChange={v => upd('smoothScale', v)} />
-            <BoolRow label={s.s_hwAccel}       val={local.hwAccel}       onChange={v => upd('hwAccel', v)} />
-            <BoolRow label={s.s_compressHtml}  val={local.compressHtml}  onChange={v => upd('compressHtml', v)} />
-            <BoolRow label={s.s_showGrid}      val={local.showGrid}      onChange={v => upd('showGrid', v)} />
-            <BoolRow label={s.s_cursorCross}   val={local.cursorCross}   onChange={v => upd('cursorCross', v)} />
-            <BoolRow label={s.s_saveLastPath}  val={local.saveLastPath}  onChange={v => upd('saveLastPath', v)} />
-            <BoolRow label={s.s_notifications} val={local.notifications} onChange={v => upd('notifications', v)} />
 
-            <NumRow label={s.s_animSpeed}    val={local.animSpeed}    min={50}  max={2000} onChange={v => upd('animSpeed', v)} />
-            <NumRow label={s.s_maxFrames}    val={local.maxFrames}    min={10}  max={3000} onChange={v => upd('maxFrames', v)} />
             <NumRow label={s.s_defaultWidth} val={local.defaultWidth} min={20}  max={600}  onChange={v => upd('defaultWidth', v)} />
             <NumRow label={s.s_defaultZoom}  val={local.defaultZoom}  min={2}   max={64}   onChange={v => upd('defaultZoom', v)} />
-            <NumRow label={s.s_maxHistory}   val={local.maxHistory}   min={1}   max={100}  onChange={v => upd('maxHistory', v)} />
             <NumRow label={s.virtualCameraPort} val={local.virtualCameraPort} min={1024} max={65535} onChange={v => upd('virtualCameraPort', v)} />
 
             <ColorRow label={s.s_defaultBg} val={local.defaultBg}
@@ -529,20 +518,6 @@ export function SettingsPanel({ config, lang, onSave, onReset, onClose, onPalett
                     onPaletteChange(Number(v));
                   }
                 }}
-              />
-            </div>
-
-            <div className="setting-row">
-              <span className="setting-label">{s.s_logLevel}</span>
-              <CustomSelect
-                value={local.logLevel}
-                options={[
-                  { value: 'debug', label: 'Debug' },
-                  { value: 'info',  label: 'Info' },
-                  { value: 'warn',  label: 'Warn' },
-                  { value: 'error', label: 'Error' },
-                ]}
-                onChange={v => upd('logLevel', v)}
               />
             </div>
 

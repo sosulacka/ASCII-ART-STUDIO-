@@ -11,24 +11,12 @@ export interface AppConfig {
   starsMinSize: number;
   starsMaxSize: number;
   starsColor: string;
-  animSpeed: number;
   autoPlay: boolean;
-  maxFrames: number;
   defaultWidth: number;
   defaultPalette: number;
   defaultFontRatio: number;
-  showFps: boolean;
-  smoothScale: boolean;
-  hwAccel: boolean;
-  compressHtml: boolean;
   defaultBg: string;
   defaultZoom: number;
-  showGrid: boolean;
-  cursorCross: boolean;
-  saveLastPath: boolean;
-  notifications: boolean;
-  logLevel: string;
-  maxHistory: number;
   virtualCameraPort: number;
 }
 
@@ -41,24 +29,12 @@ export const DEFAULT_CONFIG: AppConfig = {
   starsMinSize: 1.0,
   starsMaxSize: 3.0,
   starsColor: '#ffffff',
-  animSpeed: 150,
   autoPlay: true,
-  maxFrames: 300,
   defaultWidth: 120,
   defaultPalette: 0,
   defaultFontRatio: 2.0,
-  showFps: true,
-  smoothScale: true,
-  hwAccel: true,
-  compressHtml: true,
   defaultBg: '#0a0a0b',
   defaultZoom: 8,
-  showGrid: false,
-  cursorCross: true,
-  saveLastPath: true,
-  notifications: true,
-  logLevel: 'info',
-  maxHistory: 20,
   virtualCameraPort: 8765,
 };
 

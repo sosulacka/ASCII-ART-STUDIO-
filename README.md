@@ -30,7 +30,7 @@
 ### ═══ Overview
 
 ASCII Art Studio is a powerful desktop application that converts images, videos, and real-time webcam feeds into ASCII art. 
-Built with modern technologies including Tauri, React, and Rust, it offers professional-grade features with exceptional performance.
+Built with modern technologies including Tauri, React, and Rust, it offers professional-grade features with solid performance.
 
 ### ═══ Key Features
 
@@ -41,12 +41,11 @@ Built with modern technologies including Tauri, React, and Rust, it offers profe
 ├─ Virtual Camera        │ Stream ASCII art to other applications (OBS, Zoom, etc.)
 ├─ Multiple Palettes     │ 5 built-in palettes plus custom palette support
 ├─ Color Support         │ Full color ASCII art with RGB preservation
-├─ Hardware Acceleration │ Optional GPU acceleration for better performance
-├─ Fine-tuning Controls  │ Adjust brightness, contrast, gamma, and more
-├─ Multilingual          │ Full support for English and Russian
+├─ Fine-tuning Controls  │ Adjust brightness, contrast, gamma, invert, and more
+├─ Multilingual          │ Full support for 10 languages (EN, RU, DE, FR, ZH, JA, ES, PT, KO, IT)
 ├─ Export Options        │ Save as text, image, or video (MP4/GIF)
 ├─ Figlet Text           │ Generate ASCII text art with 50+ fonts
-└─ Multiple Themes       │ Dark, Light, Matrix, Retro, Cyberpunk themes
+└─ Multiple Themes       │ 28 themes: Dark, Light, Matrix, Retro, Cyberpunk, and more
 ```
 
 ### ═══ Technology Stack
@@ -59,7 +58,7 @@ Built with modern technologies including Tauri, React, and Rust, it offers profe
 
 **Backend:**
 - Rust with Tauri 2.0
-- Image processing with `image` and `imageproc` crates
+- CPU-based image processing with `image` and `imageproc` crates
 - Async runtime with Tokio
 - Axum for HTTP server (virtual camera)
 - V4L2 support for Linux cameras
@@ -194,11 +193,24 @@ Create your own ASCII palettes in Settings:
 - Example: ` .:-=+*#%@` (simple) or full extended ASCII
 
 #### ▸ Themes
-Switch between themes in Settings:
-- **Dark**: Modern dark interface
-- **Light**: Clean light interface
-- **Retro**: Amber CRT terminal style
-- And many others
+Switch between 28 themes in Settings:
+- **Dark/Light**: Modern interfaces
+- **Retro/Terminal**: Nostalgic CRT styles  
+- **Dracula/Monokai/Gruvbox**: Popular code editor themes
+- And 20+ more options
+
+### ═══ Performance Notes
+
+**Processing Method:**
+- All image/video processing is done on CPU (JavaScript + Rust)
+- No GPU acceleration is used
+- Performance depends on CPU speed and image resolution
+
+**Optimization Tips:**
+- Use lower width values (80-120) for real-time processing
+- Shorter palettes (10 chars) are faster than detailed ones (70-92 chars)
+- Color rendering is slower than monochrome
+- Close other applications to free up CPU resources
 
 ### ═══ Troubleshooting
 
@@ -216,9 +228,9 @@ Switch between themes in Settings:
 - Update Node: Use Node 18 LTS or later
 
 **Performance issues:**
-- Enable hardware acceleration in Settings
 - Reduce resolution/width for faster processing
 - Close other heavy applications
+- Use smaller palettes for better performance
 
 ### ═══ License
 
@@ -247,7 +259,7 @@ Built with:
 ### ═══ Обзор
 
 ASCII Art Studio — это мощное десктопное приложение, которое конвертирует изображения, видео и данные с веб-камеры в ASCII-арт в реальном времени. 
-Построено на современных технологиях: Tauri, React и Rust, предлагает профессиональные функции с исключительной производительностью.
+Построено на современных технологиях: Tauri, React и Rust, предлагает профессиональные функции с надёжной производительностью.
 
 ### ═══ Ключевые возможности
 
@@ -258,12 +270,11 @@ ASCII Art Studio — это мощное десктопное приложени
 ├─ Виртуальная камера         │ Транслируйте ASCII-арт в другие приложения (OBS, Zoom)
 ├─ Множество палитр           │ 5 встроенных палитр плюс пользовательские
 ├─ Цветная поддержка          │ Полноцветный ASCII-арт с сохранением RGB
-├─ Аппаратное ускорение       │ Опциональное GPU-ускорение для лучшей производительности
-├─ Точная настройка           │ Регулируйте яркость, контраст, гамму и многое другое
-├─ Мультиязычность            │ Полная поддержка английского и русского языков
+├─ Точная настройка           │ Регулируйте яркость, контраст, гамму, инверсию и многое другое
+├─ Мультиязычность            │ Полная поддержка 10 языков (RU, EN, DE, FR, ZH, JA, ES, PT, KO, IT)
 ├─ Опции экспорта             │ Сохранение как текст, изображение или видео (MP4/GIF)
 ├─ Figlet текст               │ Генерируйте ASCII текст-арт с более чем 50 шрифтами
-└─ Множество тем              │ Темная, Светлая, Matrix, Ретро, Киберпанк темы
+└─ Множество тем              │ 28 тем: Темная, Светлая, Matrix, Ретро, Киберпанк и другие
 ```
 
 ### ═══ Технологический стек
@@ -276,7 +287,7 @@ ASCII Art Studio — это мощное десктопное приложени
 
 **Бэкенд:**
 - Rust с Tauri 2.0
-- Обработка изображений с `image` и `imageproc`
+- CPU-обработка изображений через `image` и `imageproc`
 - Асинхронный runtime с Tokio
 - Axum для HTTP сервера (виртуальная камера)
 - Поддержка V4L2 для Linux камер
@@ -413,11 +424,24 @@ brew install pkg-config
 - Пример: ` .:-=+*#%@` (простая) или полная расширенная ASCII
 
 #### ▸ Темы
-Переключайтесь между темами в Настройках:
-- **Темная**: Современный темный интерфейс
-- **Светлая**: Чистый светлый интерфейс
-- **Ретро**: Янтарный стиль CRT-терминала
-- И многие д ругие
+Переключайтесь между 28 темами в Настройках:
+- **Темная/Светлая**: Современные интерфейсы
+- **Ретро/Терминал**: Ностальгические CRT-стили
+- **Dracula/Monokai/Gruvbox**: Популярные темы редакторов кода
+- И ещё 20+ вариантов
+
+### ═══ Заметки о производительности
+
+**Метод обработки:**
+- Вся обработка изображений/видео выполняется на CPU (JavaScript + Rust)
+- GPU-ускорение не используется
+- Производительность зависит от скорости CPU и разрешения изображения
+
+**Советы по оптимизации:**
+- Используйте меньшие значения ширины (80-120) для обработки в реальном времени
+- Короткие палитры (10 символов) быстрее детальных (70-92 символа)
+- Цветной рендеринг медленнее монохромного
+- Закройте другие приложения для освобождения ресурсов CPU
 
 ### ═══ Устранение неполадок
 
@@ -435,9 +459,9 @@ brew install pkg-config
 - Обновите Node: Используйте Node 18 LTS или новее
 
 **Проблемы с производительностью:**
-- Включите аппаратное ускорение в Настройках
 - Уменьшите разрешение/ширину для более быстрой обработки
 - Закройте другие тяжелые приложения
+- Используйте более короткие палитры для лучшей производительности
 
 
 ### ═══ Лицензия
