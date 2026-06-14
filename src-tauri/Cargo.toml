@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "It's ASCII ART STUDIO"
 authors = ["you"]
 edition = "2021"
+license = "MIT"
 
 [lib]
 name = "asciiartstudio_lib"
