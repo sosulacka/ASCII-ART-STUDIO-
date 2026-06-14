@@ -29,7 +29,11 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": [
+      "nsis",
+      "deb",
+      "appimage"
+    ],
     "resources": [
       "assets/*"
     ],
@@ -44,11 +48,11 @@
       "certificateThumbprint": null,
       "digestAlgorithm": "sha256",
       "timestampUrl": "",
-      "wix": {
-        "language": "en-US"
-      },
       "nsis": {
-        "languages": ["English", "Russian"],
+        "languages": [
+          "English",
+          "Russian"
+        ],
         "displayLanguageSelector": true,
         "installerIcon": "icons/icon.ico"
       }
