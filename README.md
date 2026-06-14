@@ -89,8 +89,8 @@ Built with modern technologies including Tauri, React, and Rust, it offers profe
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/asciiartgenerator.git
-cd asciiartgenerator
+git clone https://github.com/sosulacka/ASCII-ART-STUDIO-.git
+cd ASCII-ART-STUDIO-
 
 # Install dependencies
 npm install
@@ -197,9 +197,8 @@ Create your own ASCII palettes in Settings:
 Switch between themes in Settings:
 - **Dark**: Modern dark interface
 - **Light**: Clean light interface
-- **Matrix**: Green-on-black hacker aesthetic
 - **Retro**: Amber CRT terminal style
-- **Cyberpunk**: Neon purple/pink futuristic theme
+- And many others
 
 ### ═══ Troubleshooting
 
@@ -308,8 +307,8 @@ ASCII Art Studio — это мощное десктопное приложени
 
 ```bash
 # Клонируйте репозиторий
-git clone https://github.com/yourusername/asciiartgenerator.git
-cd asciiartgenerator
+git clone https://github.com/sosulacka/ASCII-ART-STUDIO-.git
+cd ASCII-ART-STUDIO-
 
 # Установите зависимости
 npm install
@@ -417,9 +416,8 @@ brew install pkg-config
 Переключайтесь между темами в Настройках:
 - **Темная**: Современный темный интерфейс
 - **Светлая**: Чистый светлый интерфейс
-- **Matrix**: Зелено-черная хакерская эстетика
 - **Ретро**: Янтарный стиль CRT-терминала
-- **Киберпанк**: Неоновая фиолетово-розовая футуристическая тема
+- И многие д ругие
 
 ### ═══ Устранение неполадок
 
