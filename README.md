@@ -88,7 +88,7 @@ Built with modern technologies including Tauri, React, and Rust, it offers profe
 
 ```bash
 # Clone the repository
-git clone https://github.com/sosulacka/ASCII-ART-STUDIO-.git
+git clone https://github.com/sosulacka/ASCII-ART-STUDIO.git
 cd ASCII-ART-STUDIO-
 
 # Install dependencies
@@ -318,7 +318,7 @@ ASCII Art Studio — это мощное десктопное приложени
 
 ```bash
 # Клонируйте репозиторий
-git clone https://github.com/sosulacka/ASCII-ART-STUDIO-.git
+git clone https://github.com/sosulacka/ASCII-ART-STUDIO.git
 cd ASCII-ART-STUDIO-
 
 # Установите зависимости
